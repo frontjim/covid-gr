@@ -1,7 +1,9 @@
 <template>
-  <Header />
-    <router-view class="m-10"/>
-  <Footer />
+  <div class="dark:text-white dark:text-opacity-60 dark:bg-pri" >
+    <Header/>
+      <router-view class="m-10"/>
+    <Footer/>
+  </div>
 </template>
 
 <script>

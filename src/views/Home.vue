@@ -1,7 +1,7 @@
 <template>
   <main v-if="!loading">
     <DataTitle :dataDate="dataDate" />
-    <DataBoxes :date="date" :bdata="bdata" :adata="adata" :title="title" :stats="stats" :crusial="crusial" :emvolia="emvolia" :areas="areas" @get-area="getAreaData"  />
+    <DataBoxes :tests="tests" :gender="gender" :ages="ages" :date="date" :bdata="bdata" :adata="adata" :title="title" :stats="stats" :crusial="crusial" :emvolia="emvolia" :areas="areas" @get-area="getAreaData"  />
   </main>
 
 
@@ -35,7 +35,10 @@ export default {
       xthareas:[],
       adata:{},
       bdata:{},
-      date:''
+      date:'',
+      ages:{},
+      tetst:{},
+      gender:{}
     }
 
   },
@@ -67,12 +70,30 @@ export default {
       const data = await res.json()
       return data   
     },
+    async fetchAges(){
+      const res = await fetch('https://covid-19-greece.herokuapp.com/age-distribution')
+      const data = await res.json()
+      return data  
+    },
+    async fetchTests(){
+      const res = await fetch('https://covid-19-greece.herokuapp.com/total-tests')
+      const data = await res.json()
+      return data  
+    },
+    async fetchFylla(){
+      const res = await fetch('https://covid-19-greece.herokuapp.com/gender-distribution')
+      const data = await res.json()
+      return data  
+    }
   },
   async created() {
     const data = await this.fetchData() //all
     const cdata = await this.fetchCrusial() //crusial
     const edata = await this.fetchEmvolia() //emvolia
-    const perioxes = await this.fetchAreas()
+    const perioxes = await this.fetchAreas() //areas
+    const ilik = await this.fetchAges() //ages
+    const test = await this.fetchTests() //tests
+    const fylla = await this.fetchFylla()
 
     //all data
     this.stats = data.cases
@@ -86,6 +107,12 @@ export default {
     this.areas = perioxes["regions-history"].slice(-1)[0].regions
     this.xthareas = perioxes["regions-history"].slice(-2)[0].regions
     this.date = perioxes["regions-history"].slice(-1)[0].regions[0].last_updated_at
+    //ilikies
+    this.ages = ilik.age_distribution
+    //tests
+    this.tests = test.total_tests.slice(-1)[0]
+    //gender
+    this.gender = fylla.gender_percentages
   },
 
 }
