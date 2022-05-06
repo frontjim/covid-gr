@@ -48,7 +48,7 @@ export default {
       
     },
     async fetchData() {
-      const res = await fetch('https://covid-19-greece.herokuapp.com/all')
+      const res = await fetch('https://kortsi-api.herokuapp.com/api')
       const data = await res.json()
       return data
     },
@@ -75,8 +75,8 @@ export default {
     const perioxes = await this.fetchAreas()
 
     //all data
-    this.stats = data.cases
-    this.dataDate = data.cases.slice(-1)[0].date
+    this.stats = data
+    this.dataDate = data.date
     this.loading = false
     //crusial
     this.crusial = cdata.cases
